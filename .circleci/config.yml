@@ -1,0 +1,19 @@
+---
+version: 2
+jobs:
+  build:
+    parallelism: 1
+    docker:
+      - image: circleci/ruby:2.6.2-node
+    steps:
+      # Machine Setup
+      - checkout
+      - sudo apt-get install texlive -y
+      - pdflatex resume.tex
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          context: aws-cowholio4
