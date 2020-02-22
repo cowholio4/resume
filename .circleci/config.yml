@@ -8,8 +8,12 @@ jobs:
     steps:
       # Machine Setup
       - checkout
-      - sudo apt-get install texlive -y
-      - pdflatex resume.tex
+
+      # install pdf latex package
+      - run: sudo apt-get install texlive -y
+
+      # build pdf
+      - run: pdflatex resume.tex
 
 workflows:
   version: 2
