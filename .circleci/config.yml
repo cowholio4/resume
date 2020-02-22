@@ -10,6 +10,7 @@ jobs:
       - checkout
 
       # install pdf latex package
+      - run: sudo apt-get update
       - run: sudo apt-get install texlive -y
 
       # build pdf
