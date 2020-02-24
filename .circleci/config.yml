@@ -1,10 +1,10 @@
 ---
 version: 2
 jobs:
-  build:
+  deploy:
     parallelism: 1
     docker:
-      - image: cimg/base:2020.01
+      - image: circleci/python:3.8.1
     steps:
       # Machine Setup
       - checkout
@@ -15,21 +15,16 @@ jobs:
 
       # build pdf
       - run: pdflatex resume.tex
-  deploy:
-    parallelism: 1
-    docker:
-      - image: cimg/base:2020.01
-    steps:
+
+      # deploy
+      - run: pip install awscli --upgrade --user
       - run: aws s3 cp resume.pdf s3://www-cowholio4-com/
 
 workflows:
   version: 2
-  build-and-deploy:
+  publish:
     jobs:
-      - build
       - deploy:
-          requires:
-            - build
           context: aws-cowholio4
           filters:
             branches:
