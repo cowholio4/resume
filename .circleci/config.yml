@@ -20,7 +20,7 @@ jobs:
     docker:
       - image: cimg/base:2020.01
     steps:
-      - aws s3 cp resume.pdf s3://www-cowholio4-com/
+      - run: aws s3 cp resume.pdf s3://www-cowholio4-com/
 
 workflows:
   version: 2
