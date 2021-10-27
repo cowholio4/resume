@@ -4,14 +4,14 @@ jobs:
   deploy:
     parallelism: 1
     docker:
-      - image: circleci/python:3.8.1
+      - image: cimg/python:3.9.5
     steps:
       # Machine Setup
       - checkout
 
       # install pdf latex package
       - run: sudo apt-get update
-      - run: sudo apt-get install texlive -y
+      - run: sudo apt-get install texlive texlive-latex-extra -y
 
       # build pdf
       - run: pdflatex resume.tex
@@ -19,6 +19,24 @@ jobs:
       # deploy
       - run: pip install awscli --upgrade --user
       - run: aws s3 cp resume.pdf s3://www-cowholio4-com/
+  deploy-test:
+    parallelism: 1
+    docker:
+      - image: cimg/python:3.9.5
+    steps:
+      # Machine Setup
+      - checkout
+
+      # install pdf latex package
+      - run: sudo apt-get update
+      - run: sudo apt-get install texlive texlive-latex-extra -y
+
+      # build pdf
+      - run: pdflatex resume.tex
+
+      # deploy
+      - run: pip install awscli --upgrade --user
+      - run: aws s3 cp resume.pdf s3://www-cowholio4-com/resume-test.pdf
 
 workflows:
   version: 2
@@ -29,3 +47,5 @@ workflows:
           filters:
             branches:
               only: master
+      - deploy-test:
+          context: aws-cowholio4
